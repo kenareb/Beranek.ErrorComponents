@@ -12,31 +12,22 @@
             _act = act;
         }
 
-        public FaultTolerantAction(Action<T> act, int delay)
+        public FaultTolerantAction(Action<T> act, int maxTries)
         {
             _act = act;
-            Delay = delay;
-        }
-
-        public FaultTolerantAction(Action<T> act, int delay, int maxTries)
-        {
-            _act = act;
-            Delay = delay;
             MaxTries = maxTries;
         }
 
-        public FaultTolerantAction(Action<T> act, int delay, int maxTries, IRetryStrategy strategy)
+        public FaultTolerantAction(Action<T> act, int maxTries, IRetryStrategy strategy)
         {
             _act = act;
-            Delay = delay;
             MaxTries = maxTries;
             Strategy = strategy;
         }
 
-        public FaultTolerantAction(Action<T> act, int delay, int maxTries, IRetryStrategy strategy, T arg)
+        public FaultTolerantAction(Action<T> act, int maxTries, IRetryStrategy strategy, T arg)
         {
             _act = act;
-            Delay = delay;
             MaxTries = maxTries;
             Strategy = strategy;
             _arg = arg;

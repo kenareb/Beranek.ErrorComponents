@@ -4,8 +4,8 @@
 
     public class FaultTolerantAction
     {
+        private const int DefaultDelay = 1000;
         protected Action MyAction { get; set; }
-        protected int Delay { get; set; } = 1000;
         protected int MaxTries { get; set; } = 10;
         protected IRetryStrategy Strategy { get; set; }
 
@@ -15,29 +15,20 @@
         public FaultTolerantAction(Action act)
         {
             MyAction = act;
-            Strategy = new LinearRetryStrategy(Delay);
+            Strategy = new LinearRetryStrategy(DefaultDelay);
         }
 
-        public FaultTolerantAction(Action act, int delay)
-        {
-            MyAction = act;
-            Delay = delay;
-            Strategy = new LinearRetryStrategy(Delay);
-        }
-
-        public FaultTolerantAction(Action act, int delay, int maxTries)
-        {
-            MyAction = act;
-            Delay = delay;
-            MaxTries = maxTries;
-            Strategy = new LinearRetryStrategy(Delay);
-        }
-
-        public FaultTolerantAction(Action act, int delay, int maxTries, IRetryStrategy strategy)
+        public FaultTolerantAction(Action act, int maxTries)
         {
             MyAction = act;
             MaxTries = maxTries;
-            Delay = delay;
+            Strategy = new LinearRetryStrategy(DefaultDelay);
+        }
+
+        public FaultTolerantAction(Action act, int maxTries, IRetryStrategy strategy)
+        {
+            MyAction = act;
+            MaxTries = maxTries;
             Strategy = strategy;
         }
 
