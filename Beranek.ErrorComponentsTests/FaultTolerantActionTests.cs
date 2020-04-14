@@ -25,7 +25,7 @@ namespace Beranek.ErrorComponents.Tests
             var retry = new FaultTolerantAction(error, 5);
 
             sw.Start();
-            var success = retry.Try();
+            var success = retry.Invoke();
             sw.Stop();
 
             Assert.AreEqual(5, invocationCounter);
@@ -51,7 +51,7 @@ namespace Beranek.ErrorComponents.Tests
             var retry = new FaultTolerantAction(error, 5, new ExponentialRetryStrategy(1000));
 
             sw.Start();
-            retry.Try();
+            retry.Invoke();
             sw.Stop();
 
             Assert.AreEqual(5, invocationCounter);
@@ -79,7 +79,7 @@ namespace Beranek.ErrorComponents.Tests
             retry.SetParameter("myvalue");
 
             sw.Start();
-            var success = retry.Try();
+            var success = retry.Invoke();
             sw.Stop();
 
             Assert.AreEqual(5, invocationCounter);
@@ -110,7 +110,7 @@ namespace Beranek.ErrorComponents.Tests
             retry.SetParameter("myvalue");
 
             sw.Start();
-            var success = retry.Try();
+            var success = retry.Invoke();
             sw.Stop();
 
             Assert.AreEqual(5, invocationCounter);

@@ -32,7 +32,7 @@
             Strategy = strategy;
         }
 
-        public bool Try()
+        public bool Invoke()
         {
             bool tryAgain = true;
             bool result = false;

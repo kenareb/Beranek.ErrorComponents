@@ -10,7 +10,7 @@
         {
             _act = act;
             _arg = arg;
-            MyAction = () => Invoke(_arg);
+            MyAction = () => DoInvoke(_arg);
         }
 
         public DelayedAction(Action<T> act) : base()
@@ -21,10 +21,10 @@
         public void SetParameter(T arg)
         {
             _arg = arg;
-            MyAction = () => Invoke(_arg);
+            MyAction = () => DoInvoke(_arg);
         }
 
-        private void Invoke(T arg)
+        private void DoInvoke(T arg)
         {
             _act.Invoke(arg);
         }

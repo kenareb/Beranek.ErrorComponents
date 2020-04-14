@@ -27,13 +27,13 @@
         public async Task<bool> RunWithDelayAsync(int delay)
         {            
             await Task.Delay(delay, _breaker.Token)
-                .ContinueWith(s => DoAction(), _breaker.Token)
+                .ContinueWith(s => DoInvoke(), _breaker.Token)
                 .ConfigureAwait(_goBackToOriginalThread);
 
             return true;
         }
 
-        private void DoAction()
+        private void DoInvoke()
         {
             MyAction?.Invoke();
         }
