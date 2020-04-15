@@ -34,6 +34,12 @@
             MyAction = () => DoInvoke(_arg);
         }
 
+        public bool Invoke(T arg)
+        {
+            SetParameter(arg);
+            return Invoke();
+        }
+
         public void SetParameter(T arg)
         {
             _arg = arg;
