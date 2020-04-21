@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Marcus Beranek</Authors>
+    <Company>Marcus Beranek</Company>
+    <Description>Components for fault-tolerant error handling.</Description>
+    <Copyright>MIT</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
