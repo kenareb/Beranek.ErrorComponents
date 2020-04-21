@@ -8,6 +8,9 @@
     <Description>Components for fault-tolerant error handling.</Description>
     <Copyright>© Copyright 2020 M.Beranek</Copyright>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageId>ErrorComponents</PackageId>
+    <Product>ErrorComponents</Product>
+    <PackageTags>Errorhandling, Exceptionhandling, Retry, Fault Tolerance</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
