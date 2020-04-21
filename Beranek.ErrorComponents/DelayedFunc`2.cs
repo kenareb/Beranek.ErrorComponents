@@ -12,6 +12,7 @@
 
         public DelayedFunc(Func<T, TResult> fun)
         {
+            _fun = fun;
             MyFunc = () => fun(_arg);
         }
         public DelayedFunc(Func<T, TResult> fun, T arg)

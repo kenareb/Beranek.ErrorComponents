@@ -1,7 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Beranek.ErrorComponents;
-
-namespace Beranek.ErrorComponents.Tests
+﻿namespace Beranek.ErrorComponents.Tests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Beranek.ErrorComponents;
@@ -52,9 +49,12 @@ namespace Beranek.ErrorComponents.Tests
 
             var delayedAction = new DelayedAction(act);
             sw.Start();
+
+            // dont await the next call, so we can call "Cancel"
             delayedAction.RunWithDelayAsync(2000);
             delayedAction.Cancel();
 
+            // Set timeout to 3 seconds, so we dont wait forever.
             var signaled = mre.WaitOne(3000);
 
             Assert.IsFalse(called);
