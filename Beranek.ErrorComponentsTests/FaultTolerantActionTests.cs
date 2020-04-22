@@ -35,6 +35,43 @@ namespace Beranek.ErrorComponents.Tests
             Assert.IsTrue(sw.ElapsedMilliseconds < 4500);
             Assert.IsFalse(success);
         }
+        
+        [TestMethod()]
+        public void FilterTest()
+        {
+            int invocationCounter = 0;
+            var sw = new Stopwatch();
+
+            var error = new Action(() =>
+            {
+                invocationCounter++;
+                throw new NotImplementedException(invocationCounter.ToString());
+            });
+
+            var retry = new FaultTolerantAction(error, 5)
+                .Filter(e => e.Message == "1" || e.Message == "2");
+
+            bool success = false;
+            bool exceptionThrown = false;
+            sw.Start();
+            try
+            {
+                success = retry.Invoke();
+            }
+            catch (Exception) 
+            { 
+                exceptionThrown = true;
+            }
+            sw.Stop();
+
+            Assert.AreEqual(3, invocationCounter);
+            Assert.AreEqual(3, retry.Tries);
+            Assert.IsNotNull(retry.Exception);
+            Assert.IsTrue(sw.ElapsedMilliseconds >= 2000);
+            Assert.IsTrue(sw.ElapsedMilliseconds < 2500);
+            Assert.IsFalse(success);
+            Assert.IsTrue(exceptionThrown);
+        }
 
         [TestMethod()]
         public void ExponentialRetryTest()
