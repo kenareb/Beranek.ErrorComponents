@@ -8,7 +8,7 @@
         static int counter;
         
         // Action that will fail:
-        static Action Connect = new Action(() =>
+        static Action OpenConnection = new Action(() =>
         {
             counter++;
 
@@ -39,7 +39,7 @@
             Console.WriteLine();
             Console.WriteLine("Trying to connect, please wait");
             
-            var connector1 = new ExceptionTolerantAction<SqlException>(Connect, 3, new LinearRetryStrategy(300))
+            var connector1 = new ExceptionTolerantAction<SqlException>(OpenConnection, 3, new LinearRetryStrategy(300))
                 .Filter(ex => IsTransient((ex)));
 
             connector1.Invoke();
@@ -55,7 +55,7 @@
             Console.WriteLine();
             Console.WriteLine("Trying to connect, please wait");
 
-            var connector2 = new ExceptionTolerantAction<SqlException>(Connect, 3, new LinearRetryStrategy(300))
+            var connector2 = new ExceptionTolerantAction<SqlException>(OpenConnection, 3, new LinearRetryStrategy(300))
                 .Filter(ex => IsTransient((ex)));
             var openSql = connector2.Method();
 
