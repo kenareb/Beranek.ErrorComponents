@@ -40,9 +40,33 @@
             Strategy = strategy;
         }
 
+        [Obsolete("This method is replaced by 'RetryWhen' and will be removed soon.")]
         public ExceptionTolerantFunction<TException, TResult> Filter(Func<TException, bool> predicate)
         {
+            return RetryWhen(predicate);
+        }
+
+        public ExceptionTolerantFunction<TException, TResult> RetryWhen(Func<TException, bool> predicate)
+        {
             _filter = predicate;
+            return this;
+        }
+
+        public ExceptionTolerantFunction<TException, TResult> WithMaxRetries(int max)
+        {
+            MaxTries = max;
+            return this;
+        }
+
+        public ExceptionTolerantFunction<TException, TResult> WithStrategy(IRetryStrategy strategy)
+        {
+            Strategy = strategy;
+            return this;
+        }
+
+        public ExceptionTolerantFunction<TException, TResult> WithFunction(Func<TResult> fun)
+        {
+            MyFunc = fun;
             return this;
         }
 
@@ -79,7 +103,13 @@
             return result;
         }
 
+        [Obsolete("This method is replaced by 'AsMethod' and will be removed soon.")]
         public Func<TResult> Method()
+        {
+            return AsMethod();
+        }
+
+        public Func<TResult> AsMethod()
         {
             return Invoke;
         }

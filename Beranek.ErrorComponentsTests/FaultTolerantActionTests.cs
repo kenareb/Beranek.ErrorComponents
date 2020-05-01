@@ -49,7 +49,7 @@ namespace Beranek.ErrorComponents.Tests
             });
 
             var retry = new FaultTolerantAction(error, 5)
-                .Filter(e => e.Message == "1" || e.Message == "2");
+                .RetryWhen(e => e.Message == "1" || e.Message == "2");
 
             bool success = false;
             bool exceptionThrown = false;

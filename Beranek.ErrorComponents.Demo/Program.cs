@@ -40,7 +40,7 @@
             Console.WriteLine("Trying to connect, please wait");
             
             var connector1 = new ExceptionTolerantAction<SqlException>(OpenConnection, 3, new LinearRetryStrategy(300))
-                .Filter(ex => IsTransient((ex)));
+                .RetryWhen(ex => IsTransient((ex)));
 
             connector1.Invoke();
 
@@ -56,7 +56,7 @@
             Console.WriteLine("Trying to connect, please wait");
 
             var connector2 = new ExceptionTolerantAction<SqlException>(OpenConnection, 3, new LinearRetryStrategy(300))
-                .Filter(ex => IsTransient((ex)));
+                .RetryWhen(ex => IsTransient((ex)));
             var openSql = connector2.Method();
 
             // Try to open the connection:
@@ -74,7 +74,7 @@
             Console.WriteLine("Trying to connect, please wait");
 
             var connector3 = new ExceptionTolerantFunction<SqlException, SqlConnection>(GetConnection, 3, new LinearRetryStrategy(300))
-                .Filter(ex => IsTransient((ex)));                
+                .RetryWhen(ex => IsTransient((ex)));                
             
             // Try to get the connection:
             var connection = connector3.Invoke();
@@ -90,14 +90,16 @@
             Console.WriteLine();
             Console.WriteLine("Trying to connect, please wait");
 
-            var connector4 = new ExceptionTolerantFunction<SqlException, SqlConnection>(GetConnection, 3, new LinearRetryStrategy(300))
-                .Filter(ex => IsTransient((ex)));
-            var getConnection = connector4.Method();
+            var connector4 = new ExceptionTolerantFunction<SqlException, SqlConnection>(GetConnection)
+                .RetryWhen(ex => IsTransient((ex)))
+                .WithMaxRetries(3)
+                .WithStrategy(new LinearRetryStrategy(300));
+            var getConnection = connector4.AsMethod();
 
             // Try to get the connection:
             connection = getConnection();
 
-            Console.WriteLine(connector3.Exception.Message);
+            Console.WriteLine(connector4.Exception.Message);
             Console.WriteLine($"Connection attempts: {counter}");
         }
 

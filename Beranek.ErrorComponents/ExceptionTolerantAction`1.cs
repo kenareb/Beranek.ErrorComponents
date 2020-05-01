@@ -41,7 +41,13 @@
             Strategy = strategy;
         }
 
-        public ExceptionTolerantAction<TException> Filter(Func<TException,bool> predicate)
+        [Obsolete("This method is replaced by 'RetryWhen' and will be removed soon.")]
+        public ExceptionTolerantAction<TException> Filter(Func<TException, bool> predicate)
+        {
+            return RetryWhen(predicate);
+        }
+
+        public ExceptionTolerantAction<TException> RetryWhen(Func<TException,bool> predicate)
         {
             _filter = predicate;
             return this;
