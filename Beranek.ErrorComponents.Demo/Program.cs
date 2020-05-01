@@ -90,7 +90,8 @@
             Console.WriteLine();
             Console.WriteLine("Trying to connect, please wait");
 
-            var connector4 = new ExceptionTolerantFunction<SqlException, SqlConnection>(GetConnection)
+            var connector4 = new ExceptionTolerantFunction<SqlException, SqlConnection>()
+                .WithFunction(GetConnection)
                 .RetryWhen(ex => IsTransient((ex)))
                 .WithMaxRetries(3)
                 .WithStrategy(new LinearRetryStrategy(300));
