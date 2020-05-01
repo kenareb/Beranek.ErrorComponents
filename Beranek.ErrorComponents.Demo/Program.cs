@@ -97,7 +97,7 @@
             // Try to get the connection:
             connection = getConnection();
 
-            Console.WriteLine(connector3.Exception.Message);
+            Console.WriteLine(connector4.Exception.Message);
             Console.WriteLine($"Connection attempts: {counter}");
         }
 
