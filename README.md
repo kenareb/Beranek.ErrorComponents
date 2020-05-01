@@ -58,3 +58,5 @@ retry3.Invoke();
 sw.Stop();
 Console.WriteLine(sw.ElapsedMilliseconds);
 ```
+
+More examples can be found on [Github](https://github.com/kenareb/Beranek.ErrorComponents/blob/develop/Beranek.ErrorComponents.Demo/Program.cs)
