@@ -1,13 +1,12 @@
 ﻿namespace Beranek.ErrorComponents
 {
     using System;
-
-    public class ExceptionTolerantAction<TException>
-        where TException : Exception
+    public class ExceptionTolerantFunction<TException, TResult>
+            where TException : Exception
     {
         private const int DefaultDelay = 1000;
 
-        protected Action MyAction { get; set; }
+        protected Func<TResult> MyFunc { get; set; }
 
         protected int MaxTries { get; set; } = 10;
 
@@ -18,41 +17,41 @@
             return true;
         };
 
-        public ExceptionTolerantAction()
+        public ExceptionTolerantFunction()
         { }
 
-        public ExceptionTolerantAction(Action act)
+        public ExceptionTolerantFunction(Func<TResult> act)
         {
-            MyAction = act;
+            MyFunc = act;
             Strategy = new LinearRetryStrategy(DefaultDelay);
         }
 
-        public ExceptionTolerantAction(Action act, int maxTries)
+        public ExceptionTolerantFunction(Func<TResult> act, int maxTries)
         {
-            MyAction = act;
+            MyFunc = act;
             MaxTries = maxTries;
             Strategy = new LinearRetryStrategy(DefaultDelay);
         }
 
-        public ExceptionTolerantAction(Action act, int maxTries, IRetryStrategy strategy)
+        public ExceptionTolerantFunction(Func<TResult> act, int maxTries, IRetryStrategy strategy)
         {
-            MyAction = act;
+            MyFunc = act;
             MaxTries = maxTries;
             Strategy = strategy;
         }
 
-        public ExceptionTolerantAction<TException> Filter(Func<TException,bool> predicate)
+        public ExceptionTolerantFunction<TException, TResult> Filter(Func<TException, bool> predicate)
         {
             _filter = predicate;
             return this;
         }
 
-        public bool Invoke()
+        public TResult Invoke()
         {
             bool tryAgain = true;
-            bool result = false;
+            TResult result = default(TResult);
 
-            using (var retryAction = new DelayedAction(MyAction))
+            using (var retryAction = new DelayedFunc<TResult>(MyFunc))
             {
                 while (tryAgain)
                 {
@@ -80,12 +79,12 @@
             return result;
         }
 
-        public TException Exception { get; private set; }
-
-        public Action Method()
+        public Func<TResult> Method()
         {
-            return () => Invoke();
+            return Invoke;
         }
+
+        public TException Exception { get; private set; }
 
         public int Tries { get; private set; }
 
