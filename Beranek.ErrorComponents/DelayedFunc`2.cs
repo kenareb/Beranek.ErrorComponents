@@ -4,7 +4,6 @@
     using System.Threading;
     public class DelayedFunc<T, TResult> : DelayedFunc<TResult>
     {
-        CancellationTokenSource _breaker = new CancellationTokenSource();
         private T _arg;
         private Func<T, TResult> _fun;
 

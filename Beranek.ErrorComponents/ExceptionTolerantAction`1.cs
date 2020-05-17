@@ -53,6 +53,29 @@
             return this;
         }
 
+        public ExceptionTolerantAction<TException> WithMaxRetries(int max)
+        {
+            MaxTries = max;
+            return this;
+        }
+
+        public ExceptionTolerantAction<TException> WithStrategy(IRetryStrategy strategy)
+        {
+            Strategy = strategy;
+            return this;
+        }
+
+        public ExceptionTolerantAction<TException> WithAction(Action act)
+        {
+            MyAction = act;
+            return this;
+        }
+
+        public Action AsMethod()
+        {
+            return () => Invoke();
+        }
+
         public bool Invoke()
         {
             bool tryAgain = true;
@@ -88,9 +111,10 @@
 
         public TException Exception { get; private set; }
 
+        [Obsolete("This method is replaced by 'AsMethod' and will be removed soon.")]
         public Action Method()
         {
-            return () => Invoke();
+            return AsMethod();
         }
 
         public int Tries { get; private set; }
